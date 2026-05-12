@@ -1,5 +1,5 @@
 import { defineConfig } from 'sanity';
-import { deskTool } from 'sanity/desk';
+import { structureTool } from 'sanity/structure';
 import { schemaTypes } from './lib/sanity/schemaTypes';
 
 export default defineConfig({
@@ -7,11 +7,11 @@ export default defineConfig({
   title: 'Boutique CMS',
   basePath: '/studio',
 
-  projectId: 'w4s1gp5f',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'lphg65n6',
   dataset: 'production',
 
   plugins: [
-    deskTool(),
+    structureTool(),
   ],
 
   schema: {
