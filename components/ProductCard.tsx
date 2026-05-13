@@ -89,7 +89,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </h3>
         <div className="flex justify-between items-center">
           <span className="text-lg md:text-2xl font-black text-primary">
-            {product.price ? product.price.toLocaleString() : '0'} <span className="text-[10px] md:text-sm">DA</span>
+            {product.price ? product.price.toLocaleString('fr-DZ') : '0'} <span className="text-[10px] md:text-sm">DA</span>
           </span>
         </div>
       </div>

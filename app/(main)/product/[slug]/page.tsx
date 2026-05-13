@@ -2,15 +2,18 @@
 
 import { getProductBySlug } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/client";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useCart } from '@/context/CartContext';
 
 export default function ProductPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const router = useRouter();
+  const { addItem, openCart } = useCart();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -125,11 +128,11 @@ export default function ProductPage({
               <div className="w-20 h-1.5 bg-primary rounded-full mb-8" />
               <div className="flex items-center space-x-4 mb-8">
                 <span className="text-lg md:text-2xl font-black text-primary">
-                  {product.price?.toLocaleString()} <span className="text-sm md:text-base">DA</span>
+                  {product.price?.toLocaleString('fr-DZ')} <span className="text-sm md:text-base">DA</span>
                 </span>
                 {product.oldPrice && (
                   <span className="text-2xl text-slate-400 line-through font-bold">
-                    {product.oldPrice?.toLocaleString()} DA
+                    {product.oldPrice?.toLocaleString('fr-DZ')} DA
                   </span>
                 )}
               </div>
@@ -223,13 +226,44 @@ export default function ProductPage({
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="/checkout"
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (product.sizes?.length > 0 && !selectedSize) {
+                      alert("Veuillez d'abord choisir une taille.");
+                      return;
+                    }
+                    addItem({
+                      productId: product._id || '',
+                      title: product.title || '',
+                      price: product.price || 0,
+                      quantity,
+                      size: selectedSize || 'Standard'
+                    });
+                    setTimeout(() => {
+                      router.push('/checkout');
+                    }, 50);
+                  }}
                   className={`flex-1 bg-black text-white py-5 px-8 rounded-full font-black text-lg shadow-xl shadow-black/20 hover:scale-[1.02] active:scale-95 transition-all text-center ${product.inStock === false ? "opacity-50 pointer-events-none" : ""}`}
                 >
                   ACHETER MAINTENANT
-                </Link>
+                </button>
                 <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (product.sizes?.length > 0 && !selectedSize) {
+                      alert("Veuillez d'abord choisir une taille.");
+                      return;
+                    }
+                    addItem({
+                      productId: product._id || '',
+                      title: product.title || '',
+                      price: product.price || 0,
+                      quantity,
+                      size: selectedSize || 'Standard'
+                    });
+                    openCart();
+                  }}
                   disabled={product.inStock === false}
                   className="flex-1 bg-white text-primary border-2 border-primary py-5 px-8 rounded-full font-black text-lg hover:bg-primary/5 transition-all disabled:opacity-50"
                 >

@@ -215,24 +215,14 @@ export const order = defineType({
   title: 'Commande',
   type: 'document',
   fields: [
-    defineField({
-      name: 'orderNumber',
-      title: 'Numéro de commande',
-      type: 'string',
-      readOnly: true,
-    }),
+// Removed orderNumber
     defineField({
       name: 'customerName',
       title: 'Nom du client',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'customerEmail',
-      title: 'Email du client',
-      type: 'string',
-      validation: (Rule) => Rule.required().email(),
-    }),
+// Removed customerEmail
     defineField({
       name: 'customerPhone',
       title: 'Téléphone du client',
@@ -245,21 +235,29 @@ export const order = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'items',
-      title: 'Articles',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'productId', title: 'ID du produit', type: 'string' },
-            { name: 'title', title: 'Titre', type: 'string' },
-            { name: 'quantity', title: 'Quantité', type: 'number', initialValue: 1 },
-            { name: 'price', title: 'Prix', type: 'number' },
-          ],
-        },
-      ],
-      validation: (Rule) => Rule.required().min(1),
+      name: 'productName',
+      title: 'Produit (اسم المنتج)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'size',
+      title: 'Taille (المقاس)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'quantity',
+      title: 'Quantité (الكمية)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'price',
+      title: 'Prix du produit (سعر المنتج)',
+      type: 'number',
+    }),
+    defineField({
+      name: 'shippingFee',
+      title: 'Frais de livraison (سعر التوصيل)',
+      type: 'number',
     }),
     defineField({
       name: 'totalAmount',

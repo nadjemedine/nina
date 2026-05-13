@@ -4,7 +4,7 @@ import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 
 export default function CartSidebar() {
-  const { isOpen, closeCart } = useCart();
+  const { isOpen, closeCart, items, removeItem, totalPrice } = useCart();
 
   return (
     <>
@@ -46,29 +46,52 @@ export default function CartSidebar() {
         </div>
 
         {/* Content */}
-        <div className="flex-grow overflow-y-auto">
-          {/* Empty state for now */}
-          <div className="flex flex-col items-center justify-center h-full text-center py-20 px-4">
-            <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6">
-               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
+        <div className="flex-grow overflow-y-auto px-1 py-4">
+          {items.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-center py-20 px-4">
+              <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                </svg>
+              </div>
+              <p className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Votre panier est vide</p>
+              <button 
+                onClick={closeCart}
+                className="text-[#4A5D23] font-black underline underline-offset-8"
+              >
+                Continuer vos achats
+              </button>
             </div>
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Votre panier est vide</p>
-            <button 
-              onClick={closeCart}
-              className="text-[#4A5D23] font-black underline underline-offset-8"
-            >
-              Continuer vos achats
-            </button>
-          </div>
+          ) : (
+            <div className="space-y-6">
+              {items.map((item: any, idx: number) => (
+                <div key={idx} className="flex gap-4 items-center bg-slate-50 p-4 rounded-2xl">
+                  <div className="flex-1">
+                    <h4 className="font-black text-slate-900">{item.title}</h4>
+                    <div className="text-sm font-bold text-slate-500 mt-1">
+                      Taille: <span className="text-[#4A5D23]">{item.size}</span> • Qté: <span className="text-[#4A5D23]">{item.quantity}</span>
+                    </div>
+                    <div className="font-black text-slate-900 mt-2">
+                      {(item.price * item.quantity).toLocaleString('fr-DZ')} DA
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => removeItem(item.productId, item.size)}
+                    className="p-3 text-red-400 hover:bg-red-50 hover:text-red-500 transition-colors rounded-full"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
         <div className="mt-auto pt-8 border-t border-slate-100">
           <div className="flex justify-between items-center mb-10">
             <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Total</span>
-            <span className="text-3xl font-black text-[#4A5D23]">0 DA</span>
+            <span className="text-3xl font-black text-[#4A5D23]">{totalPrice.toLocaleString('fr-DZ')} DA</span>
           </div>
           <Link 
             href="/checkout"
