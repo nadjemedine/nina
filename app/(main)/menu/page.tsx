@@ -1,28 +1,9 @@
-"use client";
-
-import { useEffect, useState } from 'react';
 import { getCategories } from '@/lib/sanity/queries';
 import { urlFor } from '@/lib/sanity/client';
 import Link from 'next/link';
 
-export default function MenuPage() {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getCategories().then(data => {
-      setCategories(data);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+export default async function MenuPage() {
+  const categories = await getCategories();
 
   return (
     <div className="bg-white min-h-screen pb-32">
@@ -34,7 +15,7 @@ export default function MenuPage() {
 
       {/* Categories Grid */}
       <div className="p-6 grid grid-cols-1 gap-6">
-        {categories.map((cat) => (
+        {categories.map((cat: any) => (
           <Link 
             key={cat._id}
             href={`/category/${cat.slug?.current}`}

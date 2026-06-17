@@ -1,27 +1,8 @@
-"use client";
-
-import { useEffect, useState } from 'react';
 import { getProducts } from '@/lib/sanity/queries';
 import ProductCard from '@/components/ProductCard';
 
-export default function ProductsPage() {
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getProducts().then(data => {
-      setProducts(data);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+export default async function ProductsPage() {
+  const products = await getProducts();
 
   return (
     <div className="bg-white min-h-screen">
@@ -38,7 +19,7 @@ export default function ProductsPage() {
       <div className="max-w-7xl mx-auto px-4 py-20 pb-32">
         {products.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>

@@ -1,42 +1,10 @@
-"use client";
-
-import { useEffect, useState, use } from 'react';
 import { getProductsByCategory } from '@/lib/sanity/queries';
 import ProductCard from '@/components/ProductCard';
 
-export default function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [categoryTitle, setCategoryTitle] = useState("");
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProductsByCategory(slug);
-        setProducts(data);
-        if (data.length > 0) {
-          setCategoryTitle(data[0].category?.title || slug);
-        } else {
-          setCategoryTitle(slug);
-        }
-      } catch (error) {
-        console.error("Error fetching category products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const products = await getProductsByCategory(slug);
+  const categoryTitle = products.length > 0 ? (products[0].category?.title || slug) : slug;
 
   return (
     <div className="bg-white min-h-screen">
@@ -52,7 +20,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       <div className="max-w-7xl mx-auto px-4 py-20">
         {products.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
