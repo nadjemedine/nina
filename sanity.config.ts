@@ -7,7 +7,7 @@ export default defineConfig({
   title: 'Boutique CMS',
   basePath: '/studio',
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'lphg65n6',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'w4s1gp5f',
   dataset: 'production',
 
   plugins: [

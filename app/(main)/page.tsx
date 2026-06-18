@@ -3,6 +3,8 @@ import { urlFor } from '@/lib/sanity/client';
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const hero = await getHero();
   const categories = await getCategories();

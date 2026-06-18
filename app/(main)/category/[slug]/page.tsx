@@ -1,6 +1,8 @@
 import { getProductsByCategory } from '@/lib/sanity/queries';
 import ProductCard from '@/components/ProductCard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const products = await getProductsByCategory(slug);

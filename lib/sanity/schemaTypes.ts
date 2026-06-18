@@ -3,23 +3,23 @@ import { defineType, defineField } from 'sanity';
 // Store Settings Schema
 export const storeSettings = defineType({
   name: 'storeSettings',
-  title: 'Paramètres du magasin',
+  title: 'إعدادات المتجر',
   type: 'document',
   fields: [
     defineField({
       name: 'siteTitle',
-      title: 'Titre du site',
+      title: 'عنوان الموقع',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'siteDescription',
-      title: 'Description du site',
+      title: 'وصف الموقع',
       type: 'text',
     }),
     defineField({
       name: 'logo',
-      title: 'Logo',
+      title: 'الشعار (اللوجو)',
       type: 'image',
       options: {
         hotspot: true,
@@ -27,21 +27,21 @@ export const storeSettings = defineType({
     }),
     defineField({
       name: 'primaryColor',
-      title: 'Couleur principale',
+      title: 'اللون الأساسي',
       type: 'string',
-      description: 'Code hexadécimal de la couleur principale (ex: #4A5D23)',
+      description: 'كود اللون الأساسي (مثال: #4A5D23)',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'currency',
-      title: 'Devise',
+      title: 'العملة',
       type: 'string',
       initialValue: 'DA',
       options: {
         list: [
-          { title: 'DA (Dinars Algériens)', value: 'DA' },
-          { title: 'USD ($)', value: 'USD' },
-          { title: 'EUR (€)', value: 'EUR' },
+          { title: 'دينار جزائري (DA)', value: 'DA' },
+          { title: 'دولار أمريكي ($)', value: 'USD' },
+          { title: 'يورو (€)', value: 'EUR' },
         ],
       },
     }),
@@ -51,18 +51,18 @@ export const storeSettings = defineType({
 // Product Schema
 export const product = defineType({
   name: 'product',
-  title: 'Produit',
+  title: 'المنتجات',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Titre',
+      title: 'اسم المنتج',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
-      title: 'Slug',
+      title: 'الرابط (Slug)',
       type: 'slug',
       options: {
         source: 'title',
@@ -72,35 +72,35 @@ export const product = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'وصف المنتج',
       type: 'text',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'price',
-      title: 'Prix',
+      title: 'السعر',
       type: 'number',
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
       name: 'images',
-      title: 'Images du produit',
+      title: 'صور المنتج',
       type: 'array',
       of: [{ type: 'image' }],
-      description: 'Ajoutez plusieurs images pour montrer les détails du produit.',
+      description: 'أضف صور متعددة لعرض تفاصيل المنتج.',
     }),
     defineField({
       name: 'sizes',
-      title: 'Tailles et Stock',
-      description: 'Gérez le stock pour chaque taille spécifique.',
+      title: 'المقاسات والمخزون',
+      description: 'إدارة المخزون لكل مقاس محدد.',
       type: 'array',
       of: [
         {
           type: 'object',
           name: 'sizeStock',
           fields: [
-            { name: 'size', title: 'Taille', type: 'string', validation: (Rule) => Rule.required() },
-            { name: 'quantity', title: 'Quantité en stock', type: 'number', validation: (Rule) => Rule.required().min(0) },
+            { name: 'size', title: 'المقاس', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'quantity', title: 'الكمية المتوفرة', type: 'number', validation: (Rule) => Rule.required().min(0) },
           ],
           preview: {
             select: {
@@ -109,8 +109,8 @@ export const product = defineType({
             },
             prepare({ title, subtitle }) {
               return {
-                title: `Taille: ${title}`,
-                subtitle: `${subtitle} en stock`,
+                title: `المقاس: ${title}`,
+                subtitle: `${subtitle} متوفر`,
               };
             },
           },
@@ -119,14 +119,14 @@ export const product = defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Catégorie',
+      title: 'التصنيف',
       type: 'reference',
       to: [{ type: 'category' }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'inStock',
-      title: 'En stock',
+      title: 'متوفر في المخزون؟',
       type: 'boolean',
       initialValue: true,
     }),
@@ -136,18 +136,18 @@ export const product = defineType({
 // Category Schema
 export const category = defineType({
   name: 'category',
-  title: 'Catégorie',
+  title: 'التصنيفات',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Titre',
+      title: 'اسم التصنيف',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
-      title: 'Slug',
+      title: 'الرابط (Slug)',
       type: 'slug',
       options: {
         source: 'title',
@@ -157,12 +157,12 @@ export const category = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'الوصف',
       type: 'text',
     }),
     defineField({
       name: 'image',
-      title: 'Image',
+      title: 'صورة التصنيف',
       type: 'image',
       options: {
         hotspot: true,
@@ -174,23 +174,23 @@ export const category = defineType({
 // Hero Schema
 export const hero = defineType({
   name: 'hero',
-  title: 'Bannière (Hero)',
+  title: 'الواجهة الرئيسية (Hero)',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Titre principal',
+      title: 'العنوان الرئيسي',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'subtitle',
-      title: 'Sous-titre',
+      title: 'العنوان الفرعي',
       type: 'text',
     }),
     defineField({
       name: 'backgroundImage',
-      title: 'Image de fond',
+      title: 'صورة الخلفية',
       type: 'image',
       options: {
         hotspot: true,
@@ -198,12 +198,12 @@ export const hero = defineType({
     }),
     defineField({
       name: 'ctaText',
-      title: 'Texte du bouton',
+      title: 'نص الزر',
       type: 'string',
     }),
     defineField({
       name: 'ctaLink',
-      title: 'Lien du bouton',
+      title: 'رابط الزر',
       type: 'string',
     }),
   ],
@@ -212,78 +212,76 @@ export const hero = defineType({
 // Order Schema
 export const order = defineType({
   name: 'order',
-  title: 'Commande',
+  title: 'الطلبات',
   type: 'document',
   fields: [
-// Removed orderNumber
     defineField({
       name: 'customerName',
-      title: 'Nom du client',
+      title: 'اسم الزبون',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-// Removed customerEmail
     defineField({
       name: 'customerPhone',
-      title: 'Téléphone du client',
+      title: 'رقم هاتف الزبون',
       type: 'string',
     }),
     defineField({
       name: 'shippingAddress',
-      title: 'Adresse de livraison',
+      title: 'عنوان التوصيل',
       type: 'text',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'productName',
-      title: 'Produit (اسم المنتج)',
+      title: 'المنتج',
       type: 'string',
     }),
     defineField({
       name: 'size',
-      title: 'Taille (المقاس)',
+      title: 'المقاس',
       type: 'string',
     }),
     defineField({
       name: 'quantity',
-      title: 'Quantité (الكمية)',
+      title: 'الكمية',
       type: 'string',
     }),
     defineField({
       name: 'price',
-      title: 'Prix du produit (سعر المنتج)',
+      title: 'سعر المنتج',
       type: 'number',
     }),
     defineField({
       name: 'shippingFee',
-      title: 'Frais de livraison (سعر التوصيل)',
+      title: 'سعر التوصيل',
       type: 'number',
     }),
     defineField({
       name: 'totalAmount',
-      title: 'Montant total',
+      title: 'المبلغ الإجمالي',
       type: 'number',
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
       name: 'status',
-      title: 'Statut',
+      title: 'حالة الطلب',
       type: 'string',
       initialValue: 'pending',
       options: {
         list: [
-          { title: 'En attente', value: 'pending' },
-          { title: 'Confirmée', value: 'confirmed' },
-          { title: 'Expédiée', value: 'shipped' },
-          { title: 'Livré', value: 'delivered' },
-          { title: 'Annulée', value: 'cancelled' },
+          { title: 'قيد الانتظار', value: 'pending' },
+          { title: 'مؤكد', value: 'confirmed' },
+          { title: 'تم الشحن', value: 'shipped' },
+          { title: 'تم التوصيل', value: 'delivered' },
+          { title: 'ملغى', value: 'cancelled' },
         ],
       },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'createdAt',
-      title: 'Créé le',
+      title: 'تاريخ الإنشاء',
       type: 'datetime',
       readOnly: true,
       initialValue: () => new Date().toISOString(),

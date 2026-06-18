@@ -1,6 +1,8 @@
 import { getProducts } from '@/lib/sanity/queries';
 import ProductCard from '@/components/ProductCard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProductsPage() {
   const products = await getProducts();
 

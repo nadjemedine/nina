@@ -2,6 +2,8 @@ import { getCategories } from '@/lib/sanity/queries';
 import { urlFor } from '@/lib/sanity/client';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CategoriesPage() {
   const categories = await getCategories();
 
